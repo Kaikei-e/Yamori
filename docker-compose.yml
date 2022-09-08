@@ -2,18 +2,18 @@ version: '3.9'
 
 services:
   lb:
-    build: 
-      context: ./loadBalancer
+    build:
+      context: ./load_balancer
     ports:
       - '80:80'
     volumes:
-      - './loadBalance:/usr/share/nginx/html'
+      - './load_balancer:/usr/share/nginx/html'
     networks:
       - app-network
 
-  geckoFront:
-    build: 
-      context: ./geckoFront
+  gecko_front:
+    build:
+      context: ./gecko_front
     environment:
       timezone: 'Asia/Tokyo'
     ports:
@@ -23,9 +23,9 @@ services:
     networks:
       - app-network
 
-  geckoBack:
-    build: 
-      context: ./geckoBack
+  gecko_back:
+    build:
+      context: ./gecko_back
     environment:
       timezone: 'Asia/Tokyo'
     ports:
@@ -36,7 +36,7 @@ services:
       - app-network
 
   madiadb:
-    build: 
+    build:
       context: ./mariadb
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
