@@ -1,0 +1,4 @@
+FROM go:1.19
+
+
+EXPOSE 9000

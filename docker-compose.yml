@@ -1,0 +1,54 @@
+version: '3.9'
+
+services:
+  lb:
+    build: 
+      context: ./loadBalancer
+    ports:
+      - '80:80'
+    volumes:
+      - './loadBalance:/usr/share/nginx/html'
+    networks:
+      - app-network
+
+  geckoFront:
+    build: 
+      context: ./geckoFront
+    environment:
+      timezone: 'Asia/Tokyo'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './geckoFront:/app'
+    networks:
+      - app-network
+
+  geckoBack:
+    build: 
+      context: ./geckoBack
+    environment:
+      timezone: 'Asia/Tokyo'
+    ports:
+      - '9000:8080'
+    volumes:
+      - './geckoBack:/app'
+    networks:
+      - app-network
+
+  madiadb:
+    build: 
+      context: ./mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      timezone: 'Asia/Tokyo'
+    ports:
+      - '3308:3306'
+    volumes:
+      - './db:/var/lib/mysql'
+
+networks:
+  app-network:
+    driver: bridge
