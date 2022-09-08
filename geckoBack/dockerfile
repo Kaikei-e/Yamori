@@ -1,4 +1,6 @@
 FROM go:1.19
 
+ADD ./app /app
+
 
 EXPOSE 9000

@@ -19,7 +19,7 @@ services:
     ports:
       - '3000:3000'
     volumes:
-      - './geckoFront:/app'
+      - './geckoFront/app:/app'
     networks:
       - app-network
 
@@ -31,7 +31,7 @@ services:
     ports:
       - '9000:8080'
     volumes:
-      - './geckoBack:/app'
+      - './geckoBack/app:/app'
     networks:
       - app-network
 
@@ -47,7 +47,7 @@ services:
     ports:
       - '3308:3306'
     volumes:
-      - './db:/var/lib/mysql'
+      - './mariadb/data:/var/lib/mysql'
 
 networks:
   app-network:
