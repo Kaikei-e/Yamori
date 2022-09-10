@@ -2,4 +2,4 @@ FROM node:16.17
 
 ADD ./app /app
 
-EXPOSE 3000
+EXPOSE 122 3000

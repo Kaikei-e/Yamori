@@ -10,8 +10,10 @@ services:
       - '80:80'
     volumes:
       - './load_balancer:/usr/share/nginx/html'
+
     networks:
-      - app-network
+      app-network:
+        ipv4_address: 192.168.10.2
     depends_on:
       - mariadb
   gecko_front:
@@ -22,13 +24,17 @@ services:
       timezone: 'Asia/Tokyo'
     tty: true
     ports:
+      - '122:22'
       - '3000:3000'
     volumes:
       - './geckoFront/app:/app'
-    networks:
-      - app-network
     depends_on:
       - mariadb
+    
+    networks:
+      app-network:
+        ipv4_address: 192.168.10.3
+
 
   gecko_back:
     build:
@@ -38,11 +44,15 @@ services:
       timezone: 'Asia/Tokyo'
     tty: true
     ports:
+      - '222:22'
       - '9000:8080'
     volumes:
       - './geckoBack/app:/app'
+    
     networks:
-      - app-network
+      app-network:
+        ipv4_address: 192.168.10.4
+
     depends_on:
       - mariadb
 
@@ -62,8 +72,15 @@ services:
     volumes:
       - './mariadb/data:/var/lib/mysql'
     restart: always
+    networks:
+      app-network:
+        ipv4_address: 192.168.10.5
 
 networks:
   app-network:
-    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.10.0/24
+
 
