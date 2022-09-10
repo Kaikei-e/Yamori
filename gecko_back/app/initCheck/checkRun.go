@@ -1,0 +1,5 @@
+package initCheck
+
+func CheckRun() {
+
+}
