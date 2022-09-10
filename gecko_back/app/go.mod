@@ -3,6 +3,7 @@ module gecko
 go 1.19
 
 require (
+	github.com/joho/godotenv v1.4.0
 	github.com/labstack/echo/v4 v4.9.0
 	github.com/rs/zerolog v1.28.0
 	gopkg.in/natefinch/lumberjack.v2 v2.0.0
