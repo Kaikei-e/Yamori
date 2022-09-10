@@ -1,4 +1,4 @@
-FROM go:1.19.1-bullseye
+FROM golang:1.19.1-bullseye
 
 ADD ./app /app
 

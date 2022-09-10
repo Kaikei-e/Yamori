@@ -1,9 +1,10 @@
-version: '3.9'
+version: "3.9"
 
 services:
   lb:
     build:
       context: ./load_balancer
+      dockerfile: Dockerfile
     ports:
       - '80:80'
     volumes:
@@ -14,6 +15,7 @@ services:
   gecko_front:
     build:
       context: ./gecko_front
+      dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
     ports:
@@ -26,6 +28,7 @@ services:
   gecko_back:
     build:
       context: ./gecko_back
+      dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
     ports:
@@ -38,6 +41,7 @@ services:
   madiadb:
     build:
       context: ./mariadb
+      dockerfile: Dockerfile
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
