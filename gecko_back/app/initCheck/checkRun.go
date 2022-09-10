@@ -2,16 +2,16 @@ package initCheck
 
 import (
 	"gecko/crossLogging"
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo/v4"
 	"os"
 	"path/filepath"
 )
 
 func CheckRun(e *echo.Echo) {
-	err := godotenv.Load()
+
+	err := EnvLoader()
 	if err != nil {
-		panic(err)
+		e.Logger.Fatal(err)
 	}
 
 	logPath := os.Getenv("LOG_PATH")
