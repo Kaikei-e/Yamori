@@ -1,29 +1,30 @@
 package router
 
 import (
-	"github.com/labstack/echo/v4"
-	"reflect"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 )
 
 func TestRouter(t *testing.T) {
-	tests := []struct {
-		name    string
-		want    *echo.Echo
-		wantErr bool
-	}{
-		// TODO: Add test cases.
+
+	e, err := Router()
+	if err != nil {
+		t.Fatal(err)
 	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := Router()
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Router() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Router() got = %v, want %v", got, tt.want)
-			}
-		})
+
+	s := httptest.NewServer(e)
+
+	r, err := http.Get(s.URL + "/api/v1/ping")
+	if err != nil {
+		t.Errorf("server initializaion error = %v", err)
+		return
 	}
+	defer r.Body.Close()
+
+	if r.StatusCode != http.StatusOK {
+		t.Errorf("server response error = %v", r.StatusCode)
+		return
+	}
+
 }
