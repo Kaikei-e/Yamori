@@ -5,25 +5,30 @@ services:
     build:
       context: ./load_balancer
       dockerfile: Dockerfile
+    tty: true
     ports:
       - '80:80'
     volumes:
       - './load_balancer:/usr/share/nginx/html'
     networks:
       - app-network
-
+    depends_on:
+      - mariadb
   gecko_front:
     build:
       context: ./gecko_front
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
+    tty: true
     ports:
       - '3000:3000'
     volumes:
       - './geckoFront/app:/app'
     networks:
       - app-network
+    depends_on:
+      - mariadb
 
   gecko_back:
     build:
@@ -31,14 +36,17 @@ services:
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
+    tty: true
     ports:
       - '9000:8080'
     volumes:
       - './geckoBack/app:/app'
     networks:
       - app-network
+    depends_on:
+      - mariadb
 
-  madiadb:
+  mariadb:
     build:
       context: ./mariadb
       dockerfile: Dockerfile
@@ -48,11 +56,14 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       timezone: 'Asia/Tokyo'
+    tty: true
     ports:
       - '3308:3306'
     volumes:
       - './mariadb/data:/var/lib/mysql'
+    restart: always
 
 networks:
   app-network:
     driver: bridge
+
