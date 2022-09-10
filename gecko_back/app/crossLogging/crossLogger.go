@@ -10,9 +10,7 @@ import (
 	"path"
 )
 
-type Logger struct {
-	*zerolog.Logger
-}
+var Logger *zerolog.Logger
 
 type Config struct {
 	ConsoleLoggingEnabled bool
@@ -26,12 +24,12 @@ type Config struct {
 }
 
 func Watcher(e *echo.Echo, config Config) error {
-	logger := configureLogger(config)
+	Logger = configureLogger(config)
 	e.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
 		LogURI:    true,
 		LogStatus: true,
 		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
-			logger.Info().
+			Logger.Info().
 				Str("URI", v.URI).
 				Int("status", v.Status).
 				Msg("request")
@@ -43,7 +41,7 @@ func Watcher(e *echo.Echo, config Config) error {
 	return nil
 }
 
-func configureLogger(config Config) *Logger {
+func configureLogger(config Config) *zerolog.Logger {
 	var writers []io.Writer
 
 	if config.ConsoleLoggingEnabled {
@@ -64,9 +62,7 @@ func configureLogger(config Config) *Logger {
 		Int("maxBackups", config.MaxBackups).
 		Int("maxAgeInDays", config.MaxAge).Msg("logger was configured")
 
-	return &Logger{
-		Logger: &logger,
-	}
+	return &logger
 
 }
 

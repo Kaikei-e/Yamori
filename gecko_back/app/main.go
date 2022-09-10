@@ -1,13 +1,22 @@
 package main
 
-import "gecko/router"
+import (
+	"gecko/crossLogging"
+	"gecko/initCheck"
+	"gecko/router"
+)
 
 func main() {
 	e, err := router.Router()
-
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
 
-	e.Logger.Fatal(e.Start(":9010"))
+	initCheck.CheckRun(e)
+
+	err = e.Start(":9010")
+	if err != nil {
+		crossLogging.Logger.Fatal()
+
+	}
 }

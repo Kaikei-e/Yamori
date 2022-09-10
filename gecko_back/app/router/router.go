@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/labstack/echo/v4"
+	"net/http"
 )
 
 func Router() (*echo.Echo, error) {
@@ -12,10 +13,13 @@ func Router() (*echo.Echo, error) {
 	//	e.Logger.Fatal(err)
 	//}
 
-	e.Group("/api/v1")
-	e.Use()
+	v1 := e.Group("/api/v1")
+	v1.Use()
 	{
-
+		v1.GET("/ping", func(c echo.Context) error {
+			c.String(http.StatusOK, "pong")
+			return nil
+		})
 	}
 
 	return e, nil
