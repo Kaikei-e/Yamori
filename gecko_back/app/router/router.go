@@ -10,7 +10,7 @@ func Router() (*echo.Echo, error) {
 
 	err := crossLogging.Watcher(e)
 	if err != nil {
-		e.Logger().Fatal(err)
+		e.Logger.Fatal(err)
 	}
 
 	e.Group("/api/v1")

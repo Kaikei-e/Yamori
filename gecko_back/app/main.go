@@ -3,11 +3,11 @@ package main
 import "gecko/router"
 
 func main() {
-	r, err := router.Router()
+	e, err := router.Router()
 
 	if err != nil {
-		r.Logger.Fatal(err)
+		e.Logger.Fatal(err)
 	}
 
-	r.Logger.Fatal(r.Start(":9000"))
+	e.Logger.Fatal(e.Start(":9010"))
 }
