@@ -1,12 +1,14 @@
 package initCheck
 
-import "github.com/joho/godotenv"
+import (
+	"github.com/joho/godotenv"
+)
 
-func EnvLoader() error {
+func EnvLoader() {
+
 	err := godotenv.Load()
 	if err != nil {
 		panic(err)
 	}
 
-	return nil
 }

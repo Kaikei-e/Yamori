@@ -9,10 +9,9 @@ import (
 
 func CheckRun(e *echo.Echo) {
 
-	err := EnvLoader()
-	if err != nil {
-		e.Logger.Fatal(err)
-	}
+	// Check if the .env file exists
+	// If it does not exist, panic
+	EnvLoader()
 
 	logPath := os.Getenv("LOG_PATH")
 
@@ -34,7 +33,7 @@ func CheckRun(e *echo.Echo) {
 		MaxAge:                60,
 	}
 
-	err = crossLogging.Watcher(e, config)
+	err := crossLogging.Watcher(e, config)
 	if err != nil {
 		e.Logger.Errorf(err.Error())
 		e.Logger.Fatal("Failed to configure logger")
