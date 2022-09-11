@@ -17,8 +17,9 @@ func TestEnvLoader(t *testing.T) {
 
 	})
 
-	t.Run("pass", func(t *testing.T) {
-		EnvLoader()
-		t.Log("pass")
-	})
+	// if you want to test the function without panic, you can use this code
+	//t.Run("pass", func(t *testing.T) {
+	//	EnvLoader()
+	//	t.Log("pass")
+	//})
 }
