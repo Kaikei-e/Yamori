@@ -1,0 +1,15 @@
+// grpc proto version
+syntax = "proto3";
+
+package authentication;
+
+option go_package = "pb/";
+
+service AuthenticationService {
+    // authenticate user
+    rpc Authenticate (AuthenticateRequest) returns (AuthenticateResponse) {}
+    // get user info
+    rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {}
+
+}
+
