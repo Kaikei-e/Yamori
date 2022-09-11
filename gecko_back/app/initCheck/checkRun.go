@@ -1,6 +1,7 @@
 package initCheck
 
 import (
+	"fmt"
 	"gecko/crossLogging"
 	"github.com/labstack/echo/v4"
 	"os"
@@ -9,16 +10,14 @@ import (
 
 func CheckRun(e *echo.Echo) {
 
-	// Check if the .env file exists
-	// If it does not exist, panic
-	EnvLoader()
-
 	logPath := os.Getenv("LOG_PATH")
 
+	fmt.Println(logPath)
+
 	if _, err := os.Stat(filepath.Join("/var/log/", logPath)); os.IsNotExist(err) {
-		err := os.Mkdir(filepath.Join("/var/log/", logPath), 0755)
+		err := os.Mkdir(filepath.Join("/var/log/", logPath), 0750)
 		if err != nil {
-			crossLogging.Logger.Fatal().Err(err).Msg("failed to create log directory")
+			e.Logger.Fatal(err)
 		}
 	}
 
@@ -26,8 +25,8 @@ func CheckRun(e *echo.Echo) {
 		ConsoleLoggingEnabled: true,
 		EncodeLogsAsJson:      true,
 		FileLoggingEnabled:    true,
-		Directory:             filepath.Join("/var/log/", logPath, "server.log"),
-		Filename:              "server.json",
+		Directory:             filepath.Join("/var/log/", logPath),
+		Filename:              "server.log",
 		MaxSize:               50,
 		MaxBackups:            50,
 		MaxAge:                60,
@@ -39,5 +38,7 @@ func CheckRun(e *echo.Echo) {
 		e.Logger.Fatal("Failed to configure logger")
 
 	}
+
+	crossLogging.Logger.Info().Msg("log file was created, and the logger started correctly")
 
 }

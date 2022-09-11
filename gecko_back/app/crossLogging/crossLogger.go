@@ -32,6 +32,8 @@ func Watcher(e *echo.Echo, config Config) error {
 			Logger.Info().
 				Str("URI", v.URI).
 				Int("status", v.Status).
+				Timestamp().
+				Dur("latency", v.Latency).
 				Msg("request")
 
 			return nil

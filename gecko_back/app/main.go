@@ -7,6 +7,10 @@ import (
 )
 
 func main() {
+	// Check if the .env file exists
+	// If it does not exist, panic
+	initCheck.EnvLoader()
+
 	e, err := router.Router()
 	if err != nil {
 		e.Logger.Fatal(err)
