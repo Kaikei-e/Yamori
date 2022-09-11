@@ -12,6 +12,6 @@ create table yamori.users
     clearance      tinyint            NOT NULL DEFAULT 0 comment 'is admin user',
     account_status tinyint            NOT NULL DEFAULT 0 comment 'account status',
     user_name      varchar(255)       NOT NULL comment 'user name',
-    INDEX         idx_email (email),
+    INDEX         idx_email (id, email),
     PRIMARY KEY   (id)
 ) ENGINE = InnoDB comment 'users for managing guest appointment';
