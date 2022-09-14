@@ -1707,6 +1707,11 @@ svelte-preprocess@^4.0.0, svelte-preprocess@^4.10.6:
     sorcery "^0.10.0"
     strip-indent "^3.0.0"
 
+svelte-use-form@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/svelte-use-form/-/svelte-use-form-2.4.3.tgz#d97d805daacd4d2ca5ba226b9864ce70814eb47f"
+  integrity sha512-+SCl4faZMXDtfpizTPsyB3HuFq6r716LV4mQ3cmXqWMJy7vcLWT5v6grHt+pDNylrvJ7+R3eihnKkru5r0QkuA==
+
 svelte@^3.44.0:
   version "3.50.1"
   resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.50.1.tgz#b35fbc5e79ddd71e8bb27c3149ee6ff903841239"

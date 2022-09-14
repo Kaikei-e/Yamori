@@ -2,7 +2,9 @@ import { getContext, setContext } from 'svelte';
 import { writable, type Writable } from 'svelte/store';
 
 // store creation
-export const session = getContextStore<App.Session>('__SESSION__');
+export const session = setupContextStore('session', null);
+
+export let loginSession: User;
 
 // helper functions
 

@@ -1,7 +1,6 @@
 <script>
-	import { session } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import { post } from '$lib/utils.js';
+	// import { post } from '$lib/utils.js';
 	import ListErrors from '$lib/ListErrors.svelte';
 
 	let email = '';
@@ -9,23 +8,22 @@
 	/**
 	 * @type {null}
 	 */
-	let errors = null;
 
-	async function submit(event) {
-		const response = await post(`auth/login`, { email, password });
+	// async function submit(event) {
+	// 	const response = await post(`auth/login`, { email, password });
 
-		// TODO handle network errors
-		errors = response.errors;
+	// 	// TODO handle network errors
+	// 	errors = response.errors;
 
-		if (response.user) {
-			$session.user = response.user;
-			goto('/');
-		}
-	}
+	// 	if (response.user) {
+	// 		$session.user = response.user;
+	// 		goto('/');
+	// 	}
+	// }
 </script>
 
 <svelte:head>
-	<title>Sign in >> Yamori </title>
+	<title>Sign in >> Yamori</title>
 </svelte:head>
 
 <div class="auth-page">

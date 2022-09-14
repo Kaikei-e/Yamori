@@ -18,4 +18,9 @@ declare namespace App {
 		session: App.Session;
 	}
 	// interface Platform {}
+
+	interface Credentials {
+		email: string
+		password: string
+	}
 }
