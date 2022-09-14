@@ -1,6 +1,10 @@
 import { error } from '@sveltejs/kit'
+import { writable, type Writable } from 'svelte/store'
 
-export const handleSession = async (event, session) => {
+export const session = writable<App.Session>()
+export let loginSession: Writable<App.Session>; 
+
+export const handleSession = async (event: string, session: any) => {
   if (event === 'SIGNED_OUT') {
     try {
       await fetch('/api/cookie', {

@@ -4,7 +4,7 @@ import { writable, type Writable } from 'svelte/store';
 // store creation
 export const session = setupContextStore('session', null);
 
-export let loginSession: User;
+export let loginSession: Writable<App.Session>;
 
 // helper functions
 
