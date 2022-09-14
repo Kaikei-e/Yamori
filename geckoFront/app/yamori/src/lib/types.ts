@@ -1,6 +1,6 @@
-export interface Session {
+export interface LoginSession {
   user: {
     email: string,
     accessToken?: string
-  } | null
+  }
 }

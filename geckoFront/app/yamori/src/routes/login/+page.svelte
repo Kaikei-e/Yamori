@@ -1,64 +1,70 @@
 <script>
 	import { goto } from '$app/navigation';
-	// import { post } from '$lib/utils.js';
-	import ListErrors from '$lib/ListErrors.svelte';
+  import loginSession from '$lib/stores';
 
-	let email = '';
-	let password = '';
-	/**
-	 * @type {null}
-	 */
 
-	// async function submit(event) {
-	// 	const response = await post(`auth/login`, { email, password });
+  let user = loginSession 
+  
+  let errors = null;
 
-	// 	// TODO handle network errors
-	// 	errors = response.errors;
 
-	// 	if (response.user) {
-	// 		$session.user = response.user;
-	// 		goto('/');
-	// 	}
-	// }
+  const unsbscribe = user.subscribe((value) => {
+    
+    console.log('value', value);
+    if (value) {
+      errors = value.errors;
+    }
+  });
+
+  const onSubmit = async () => {
+    try {
+      const res = await fetch('/api/users/login', {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(user)
+      });
+
+      if (res.ok) {
+        const { user } = await res.json();
+        session.set(user);
+        goto('/');
+      } else {
+        const { errors } = await res.json();
+        throw errors;
+      }
+    } catch (err) {
+      errors = err;
+    }
+  };
+
+  
 </script>
+ 
 
-<svelte:head>
-	<title>Sign in >> Yamori</title>
-</svelte:head>
-
-<div class="auth-page">
-	<div class="container page">
-		<div class="row">
-			<div class="col-md-6 offset-md-3 col-xs-12">
-				<h1 class="text-xs-center">Sign In</h1>
-				<p class="text-xs-center">
-					<a href="/register">Need an account?</a>
-				</p>
-
-				<ListErrors {errors} />
-
-				<form on:submit|preventDefault={submit}>
-					<fieldset class="form-group">
-						<input
-							class="form-control form-control-lg"
-							type="email"
-							required
-							placeholder="Email"
-							bind:value={email}
-						/>
-					</fieldset>
-					<fieldset class="form-group">
-						<input
-							class="form-control form-control-lg"
-							type="password"
-							required
-							placeholder="Password"
-							bind:value={password}
-						/>
-					</fieldset>
-					<button class="btn btn-lg btn-primary pull-xs-right" type="submit"> Sign in </button>
-				</form>
-			</div>
-		</div>
-	</div>
-</div>
+<h1>Sign in</h1>
+<p>
+  <a href="/register">Need an account?</a>
+</p>
+<form on:submit>
+  <fieldset>
+    <fieldset class="form-group">
+      <input
+        class="form-control form-control-lg"
+        type="email"
+        placeholder="Email"
+        bind:value={$user.email}
+      />
+    </fieldset>
+    <fieldset class="form-group">
+      <input
+        class="form-control form-control-lg"
+        type="password"
+        placeholder="Password"
+        bind:value={$user.password}
+      />
+    </fieldset>
+    <button class="btn btn-lg btn-primary pull-xs-right" type="submit" disabled={inProgress}>
+      Sign in
+    </button>
+  </fieldset>
+</form>

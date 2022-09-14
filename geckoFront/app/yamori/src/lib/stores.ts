@@ -1,10 +1,11 @@
 import { getContext, setContext } from 'svelte';
 import { writable, type Writable } from 'svelte/store';
+import type { LoginSession } from './types';
 
 // store creation
-export const session = setupContextStore('session', null);
+// export const session = setupContextStore('session', null);
 
-export let loginSession: Writable<App.Session>;
+export let loginSession: Writable<LoginSession>;
 
 // helper functions
 
