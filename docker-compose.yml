@@ -27,7 +27,7 @@ services:
       - '122:22'
       - '3000:3000'
     volumes:
-      - './geckoFront/app:/app'
+      - './gecko_front/app:/app'
     depends_on:
       - mariadb
     
@@ -47,7 +47,7 @@ services:
       - '222:22'
       - '9000:8080'
     volumes:
-      - './geckoBack/app:/app'
+      - './gecko_back/app:/app'
     
     networks:
       app-network:
