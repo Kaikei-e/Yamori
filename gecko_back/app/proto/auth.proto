@@ -5,11 +5,31 @@ package authentication;
 
 option go_package = "pb/";
 
-service AuthenticationService {
-    // authenticate user
-    rpc Authenticate (AuthenticateRequest) returns (AuthenticateResponse) {}
-    // get user info
-    rpc GetUserInfo (GetUserInfoRequest) returns (GetUserInfoResponse) {}
-
+message LoginRequest {
+    string username = 1;
+    string password = 2;
 }
+
+message LoginResponse {
+    string token = 1;
+}
+
+message RegisterRequest {
+    string username = 1;
+    string password = 2;
+}
+
+message RegisterResponse {
+    string token = 1;
+    bool success = 2;
+}
+
+service Authentication {
+    rpc Register(RegisterRequest) returns (LoginResponse) {}
+
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+
+    rpc Logout(LoginRequest) returns (LoginResponse) {}
+}
+
 
