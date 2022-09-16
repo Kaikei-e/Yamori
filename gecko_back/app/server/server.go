@@ -1,12 +1,33 @@
 package server
 
 import (
+	"context"
 	"gecko/crossLogging"
+	"gecko/proto/pkg/authentication"
 	"google.golang.org/grpc"
 	"net"
 	"os"
 	"os/signal"
 )
+
+type AuthServer struct {
+	authentication.UnimplementedAuthenticationServer
+}
+
+func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error) {
+
+	token, err := a.Login(ctx, req)
+	if err != nil {
+		crossLogging.Logger.Error().Err(err).Msg("failed to login")
+		return nil, err
+	}
+
+
+	return token, nil
+
+}
+
+}
 
 func Server() {
 	port := os.Getenv("PORT")
@@ -23,6 +44,7 @@ func Server() {
 	server := grpc.NewServer()
 
 	// register services here
+	authentication.AuthenticationServer(server)
 
 	go func() {
 		crossLogging.Logger.Info().Msg("grpc server is starting")
