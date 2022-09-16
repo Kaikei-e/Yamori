@@ -1,3 +1,4 @@
+// Package initCheck checks the required files and minimum requirements for start application
 package initCheck
 
 import (
@@ -8,6 +9,8 @@ import (
 	"path/filepath"
 )
 
+// CheckRun checks if the .env file exists
+// and configure the logger
 func CheckRun(e *echo.Echo) {
 
 	logPath := os.Getenv("LOG_PATH")

@@ -4,7 +4,9 @@ import (
 	"context"
 	"gecko/crossLogging"
 	"gecko/proto/pkg/authentication"
+	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 	"net"
 	"os"
 	"os/signal"
@@ -12,6 +14,10 @@ import (
 
 type AuthServer struct {
 	authentication.UnimplementedAuthenticationServer
+}
+
+func NewAuthServer() *AuthServer {
+	return &AuthServer{}
 }
 
 func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error) {
@@ -22,15 +28,17 @@ func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest
 		return nil, err
 	}
 
-
 	return token, nil
 
 }
 
-}
-
 func Server() {
-	port := os.Getenv("PORT")
+	err := godotenv.Load()
+	if err != nil {
+		crossLogging.Logger.Fatal().Stack().Err(err).Msg("failed to load env")
+	}
+
+	port := os.Getenv("GPORT")
 	if port == "" {
 		panic("PORT is not set. please set PORT")
 	}
@@ -44,7 +52,9 @@ func Server() {
 	server := grpc.NewServer()
 
 	// register services here
-	authentication.AuthenticationServer(server)
+	authentication.RegisterAuthenticationServer(server, NewAuthServer())
+
+	reflection.Register(server)
 
 	go func() {
 		crossLogging.Logger.Info().Msg("grpc server is starting")

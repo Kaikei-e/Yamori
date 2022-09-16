@@ -4,6 +4,7 @@ import (
 	"gecko/crossLogging"
 	"gecko/initCheck"
 	"gecko/router"
+	"gecko/server"
 )
 
 func main() {
@@ -22,6 +23,8 @@ func main() {
 	}
 
 	initCheck.CheckRun(e)
+
+	server.Server()
 
 	err = e.Start(":9010")
 	if err != nil {
