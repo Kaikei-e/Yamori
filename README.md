@@ -16,3 +16,13 @@ This repository will be used to develop combined development skills from QA to p
 <br>
 
 Docker Compose to implement an application that can be deployed immediately.
+
+
+## Library, Framework
+
+- [Echo](https://github.com/labstack/echo)
+- [gRPC](https://grpc.io/)
+- [Bun](https://bun.uptrace.dev/)
+- [Svelte](https://svelte.dev/)
+- [SvelteKit](https://kit.svelte.dev/)
+- []()
