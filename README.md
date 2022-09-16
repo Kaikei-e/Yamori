@@ -25,4 +25,5 @@ Docker Compose to implement an application that can be deployed immediately.
 - [Bun](https://bun.uptrace.dev/)
 - [Svelte](https://svelte.dev/)
 - [SvelteKit](https://kit.svelte.dev/)
-- []()
+- [MariaDB](https://mariadb.com/kb/en/)
+- [Docker](https://www.docker.com/)
