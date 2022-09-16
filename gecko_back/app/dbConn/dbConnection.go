@@ -1,3 +1,5 @@
+// Package dbConn is the connector to the database
+// this package presents as a infrastructure layer of DDD
 package dbConn
 
 import (

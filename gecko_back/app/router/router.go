@@ -1,3 +1,5 @@
+// Package router is the router of the application
+// but this will be replaced by gRPC
 package router
 
 import (

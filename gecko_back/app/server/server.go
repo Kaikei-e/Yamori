@@ -1,3 +1,5 @@
+// Package server is the core of the gRPC
+// this will replace the router package
 package server
 
 import (
