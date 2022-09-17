@@ -4,6 +4,7 @@ package server
 
 import (
 	"context"
+	"gecko/auth"
 	"gecko/crossLogging"
 	"gecko/proto/pkg/authentication"
 	"github.com/joho/godotenv"
@@ -24,7 +25,7 @@ func NewAuthServer() *AuthServer {
 
 func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error) {
 
-	token, err := a.Login(ctx, req)
+	token, err := auth.GetToken(ctx, req)
 	if err != nil {
 		crossLogging.Logger.Error().Err(err).Msg("failed to login")
 		return nil, err

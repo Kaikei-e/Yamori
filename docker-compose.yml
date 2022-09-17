@@ -46,6 +46,7 @@ services:
     ports:
       - '222:22'
       - '9000:8080'
+      - '9002:9020'
     volumes:
       - './gecko_back/app:/app'
     
