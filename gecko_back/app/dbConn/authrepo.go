@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func Login(ctx context.Context, db *bun.DB, username, password string) (userrepo.User, error) {
+func Login(ctx context.Context, db *bun.DB, username, password string) (*userrepo.User, error) {
 	crossLogging.Logger.Info("login request", zap.String("username", username))
 
 	var user userrepo.User
@@ -16,8 +16,8 @@ func Login(ctx context.Context, db *bun.DB, username, password string) (userrepo
 	err := db.NewSelect().Model(&user).Where("username = ?", username).Scan(ctx)
 	if err != nil {
 		crossLogging.Logger.Error("error while creating a new auth repo", zap.Error(err))
-		return "", err
+		return nil, err
 	}
 
-	return user, nil
+	return &user, nil
 }
