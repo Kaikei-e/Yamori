@@ -28,7 +28,7 @@ func main() {
 
 	err = e.Start(":9010")
 	if err != nil {
-		crossLogging.Logger.Fatal()
+		crossLogging.Logger.Fatal("Failed to start the server")
 
 	}
 }

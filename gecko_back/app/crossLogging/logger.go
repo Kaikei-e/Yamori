@@ -8,17 +8,27 @@ import (
 
 var Logger *zap.Logger
 
-func LoggerSetup() {
+func LoggerSetup(path string) {
+	//ws, err := os.OpenFile(path, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	//if err != nil {
+	//	panic(err)
+	//}
+
 	rotateLogger := &lumberjack.Logger{
 		Filename:   "server.log",
 		MaxSize:    1, // megabytes
 		MaxBackups: 3,
 		MaxAge:     28,   //days
 		Compress:   true, // disabled by default
+
 	}
 
 	writerSyncer := zapcore.AddSync(rotateLogger)
-	encoder := zapcore.NewJSONEncoder(zapcore.EncoderConfig{
+
+	conf := zap.NewProductionConfig()
+	encoderConf := zap.NewProductionEncoderConfig()
+
+	encoderConf = zapcore.EncoderConfig{
 		LevelKey:       "level",
 		TimeKey:        "time",
 		MessageKey:     "message",
@@ -30,9 +40,16 @@ func LoggerSetup() {
 		EncodeTime:     zapcore.ISO8601TimeEncoder,
 		EncodeDuration: zapcore.SecondsDurationEncoder,
 		EncodeCaller:   zapcore.ShortCallerEncoder,
-	})
+	}
 
-	core := zapcore.NewCore(encoder, writerSyncer, zapcore.DebugLevel)
+	conf.EncoderConfig = encoderConf
+	conf.OutputPaths = []string{"stdout", path}
+
+	core := zapcore.NewCore(
+		zapcore.NewJSONEncoder(conf.EncoderConfig),
+		writerSyncer,
+		zapcore.InfoLevel,
+	)
 
 	Logger = zap.New(core, zap.AddCaller())
 	defer func(logger *zap.Logger) {

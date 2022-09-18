@@ -15,16 +15,19 @@ func CheckRun(e *echo.Echo) {
 
 	logPath := os.Getenv("LOG_PATH")
 
-	fmt.Println(logPath)
+	fullPath := filepath.Join("/var/log/", logPath)
 
-	if _, err := os.Stat(filepath.Join("/var/log/", logPath)); os.IsNotExist(err) {
-		err := os.Mkdir(filepath.Join("/var/log/", logPath), 0750)
+	fmt.Println(fullPath)
+
+	//check the existence of the log directory
+	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
+		err := os.Mkdir(fullPath, 0750)
 		if err != nil {
 			e.Logger.Fatal(err)
 		}
 	}
 
-	crossLogging.LoggerSetup()
+	crossLogging.LoggerSetup(fullPath)
 
 	//
 	//config := crossLogging.Config{
