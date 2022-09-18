@@ -15,7 +15,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	defer db.Close()
+	defer db.DB.Close()
 
 	//e, err := router.Router()
 	//if err != nil {

@@ -10,6 +10,31 @@ import (
 	"os"
 )
 
+type DBConn interface {
+	OpenConn() (*bun.DB, error)
+}
+
+type Conn struct {
+	db *bun.DB
+}
+
+func OpenConn() (*bun.DB, error) {
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
+
+	open, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
+	if err != nil {
+		panic(err)
+	}
+
+	db := bun.NewDB(open, mysqldialect.New())
+
+	return db, nil
+}
+
 func DBConnection() (*bun.DB, error) {
 
 	user := os.Getenv("DB_USER")
@@ -18,12 +43,12 @@ func DBConnection() (*bun.DB, error) {
 	port := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")
 
-	sqldb, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
+	open, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
 	if err != nil {
 		panic(err)
 	}
 
-	db := bun.NewDB(sqldb, mysqldialect.New())
+	db := bun.NewDB(open, mysqldialect.New())
 
 	return db, nil
 }

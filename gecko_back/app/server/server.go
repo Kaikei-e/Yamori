@@ -3,7 +3,7 @@
 package server
 
 import (
-	"context"
+	"database/sql"
 	"gecko/crossLogging"
 	"gecko/proto/pkg/authentication"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
@@ -12,6 +12,8 @@ import (
 	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
 	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"github.com/joho/godotenv"
+	"github.com/uptrace/bun"
+	"github.com/uptrace/bun/dialect/mysqldialect"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -21,24 +23,32 @@ import (
 	"os/signal"
 )
 
-type AuthServer struct {
-	authentication.UnimplementedAuthenticationServer
+type Repository interface{}
+
+type db struct {
+	db *bun.DB
 }
 
-func NewAuthServer() *AuthServer {
-	return &AuthServer{}
-}
+func NewRepo() (Repository, error) {
 
-func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error) {
+	user := os.Getenv("DB_USER")
+	password := os.Getenv("DB_PASSWORD")
+	host := os.Getenv("DB_HOST")
+	port := os.Getenv("DB_PORT")
+	dbName := os.Getenv("DB_NAME")
 
-	token, err := a.Login(ctx, req)
+	open, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
 	if err != nil {
-		crossLogging.Logger.Error("error while logging in", zap.Error(err))
-		return nil, err
+		panic(err)
 	}
 
-	return token, nil
+	db := bun.NewDB(open, mysqldialect.New())
 
+	return &db{db}, nil
+}
+
+type AuthServer struct {
+	authentication.UnimplementedAuthenticationServer
 }
 
 func Server() {
