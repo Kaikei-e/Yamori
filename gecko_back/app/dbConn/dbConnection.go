@@ -3,6 +3,7 @@
 package dbConn
 
 import (
+	"context"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/uptrace/bun"
@@ -10,9 +11,7 @@ import (
 	"os"
 )
 
-type DBConn interface {
-	OpenConn() (*bun.DB, error)
-}
+type DBConn = func(ctx context.Context) *bun.DB
 
 type Conn struct {
 	db *bun.DB

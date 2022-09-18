@@ -8,7 +8,7 @@ import (
 	"go.uber.org/zap"
 )
 
-func Login(ctx context.Context, db *bun.DB, username, password string) (*userrepo.User, error) {
+func FetchUser(ctx context.Context, db *bun.DB, username string) (*userrepo.User, error) {
 	crossLogging.Logger.Info("login request", zap.String("username", username))
 
 	var user userrepo.User
