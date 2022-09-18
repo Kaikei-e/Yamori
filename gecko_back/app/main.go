@@ -1,9 +1,7 @@
 package main
 
 import (
-	"gecko/crossLogging"
 	"gecko/initCheck"
-	"gecko/router"
 	"gecko/server"
 )
 
@@ -17,18 +15,18 @@ func main() {
 	}
 	defer db.Close()
 
-	e, err := router.Router()
-	if err != nil {
-		e.Logger.Fatal(err)
-	}
+	//e, err := router.Router()
+	//if err != nil {
+	//	e.Logger.Fatal(err)
+	//}
 
-	initCheck.CheckRun(e)
+	initCheck.CheckRun()
 
 	server.Server()
 
-	err = e.Start(":9010")
-	if err != nil {
-		crossLogging.Logger.Fatal("Failed to start the server")
-
-	}
+	//err = e.Start(":9010")
+	//if err != nil {
+	//	crossLogging.Logger.Fatal("Failed to start the server")
+	//
+	//}
 }

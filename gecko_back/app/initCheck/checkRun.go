@@ -4,14 +4,13 @@ package initCheck
 import (
 	"fmt"
 	"gecko/crossLogging"
-	"github.com/labstack/echo/v4"
 	"os"
 	"path/filepath"
 )
 
 // CheckRun checks if the .env file exists
 // and configure the logger
-func CheckRun(e *echo.Echo) {
+func CheckRun() {
 
 	logPath := os.Getenv("LOG_PATH")
 
@@ -23,7 +22,7 @@ func CheckRun(e *echo.Echo) {
 	if _, err := os.Stat(fullPath); os.IsNotExist(err) {
 		err := os.Mkdir(fullPath, 0750)
 		if err != nil {
-			e.Logger.Fatal(err)
+			panic(err)
 		}
 	}
 

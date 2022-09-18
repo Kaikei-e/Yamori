@@ -4,26 +4,31 @@ import (
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"gopkg.in/natefinch/lumberjack.v2"
+	"path/filepath"
 )
 
 var Logger *zap.Logger
 
 func LoggerSetup(path string) {
-	//ws, err := os.OpenFile(path, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
+	fp := filepath.Join(path + "/server.log")
+
+	//ws, err := os.OpenFile(fp, os.O_WRONLY|os.O_APPEND|os.O_CREATE, 0666)
 	//if err != nil {
 	//	panic(err)
 	//}
 
 	rotateLogger := &lumberjack.Logger{
-		Filename:   "server.log",
+		Filename:   fp,
 		MaxSize:    1, // megabytes
 		MaxBackups: 3,
 		MaxAge:     28,   //days
 		Compress:   true, // disabled by default
-
+		LocalTime:  true,
 	}
 
 	writerSyncer := zapcore.AddSync(rotateLogger)
+
+	//writerSyncer := zapcore.AddSync(ws)
 
 	conf := zap.NewProductionConfig()
 	encoderConf := zap.NewProductionEncoderConfig()
@@ -51,16 +56,14 @@ func LoggerSetup(path string) {
 		zapcore.InfoLevel,
 	)
 
-	Logger = zap.New(core, zap.AddCaller())
-	defer func(logger *zap.Logger) {
-		err := logger.Sync()
-		if err != nil {
-			panic(err)
-		}
+	Logger = zap.New(core)
+	//defer func(logger *zap.Logger) {
+	//	err := logger.Sync()
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//
+	//}(Logger)
 
-	}(Logger)
-
-	for i := 0; i < 100; i++ {
-		Logger.Info("test")
-	}
+	Logger.Info("log file was created, and the logger started correctly")
 }
