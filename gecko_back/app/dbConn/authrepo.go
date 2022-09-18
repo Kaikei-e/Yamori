@@ -1,34 +1,23 @@
 package dbConn
 
 import (
+	"context"
 	"gecko/crossLogging"
+	"gecko/models/userrepo"
 	"github.com/uptrace/bun"
 	"go.uber.org/zap"
 )
 
-type AuthRepo struct {
-	db *bun.DB
-}
+func Login(ctx context.Context, db *bun.DB, username, password string) (userrepo.User, error) {
+	crossLogging.Logger.Info("login request", zap.String("username", username))
 
-func (a *AuthRepo) OpenConn() (*bun.DB, error) {
+	var user userrepo.User
 
-}
-
-func NewAuthRepo() (DBConn, error) {
-	if err != nil {
-		crossLogging.Logger.Error("error while creating a new auth repo", zap.Error(err))
-		return nil, err
-	}
-
-	return &AuthRepo{db: db}, nil
-}
-
-func (a *AuthRepo) Login(db DBConn, username, password string) (string, error) {
-	db, err := NewAuthRepo()
+	err := db.NewSelect().Model(&user).Where("username = ?", username).Scan(ctx)
 	if err != nil {
 		crossLogging.Logger.Error("error while creating a new auth repo", zap.Error(err))
 		return "", err
 	}
 
-	return "", nil
+	return user, nil
 }
