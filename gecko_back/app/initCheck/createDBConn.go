@@ -2,6 +2,7 @@ package initCheck
 
 import (
 	"errors"
+	"gecko/crossLogging"
 	"gecko/dbConn"
 	"github.com/uptrace/bun"
 )
@@ -16,6 +17,8 @@ func CreateDBConn() (*bun.DB, error) {
 	if err != nil {
 		return nil, errors.New("database does not correspond to this server")
 	}
+
+	crossLogging.Logger.Info("Successfully connected to the database")
 
 	return db, nil
 

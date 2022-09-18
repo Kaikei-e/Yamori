@@ -9,6 +9,8 @@ func main() {
 	// Check if the .env file exists
 	// If it does not exist, panic
 	initCheck.EnvLoader()
+	initCheck.CheckRun()
+
 	db, err := initCheck.CreateDBConn()
 	if err != nil {
 		panic(err)
@@ -19,8 +21,6 @@ func main() {
 	//if err != nil {
 	//	e.Logger.Fatal(err)
 	//}
-
-	initCheck.CheckRun()
 
 	server.Server()
 
