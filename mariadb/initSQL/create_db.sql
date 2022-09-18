@@ -7,7 +7,7 @@ create table yamori.users
     created_at        DATETIME(6)        NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
     updated_at        DATETIME(6)        NOT NULL DEFAULT CURRENT_TIMESTAMP(6) ON UPDATE CURRENT_TIMESTAMP(6),
     deleted_at        DATETIME(6)        NOT NULL comment 'soft delete',
-    email             varchar(255)       NOT NULL comment 'email address',
+    email             varchar(255)       NOT NULL UNIQUE comment 'email address',
     pass_hash         varchar(255)       NOT NULL comment 'password',
     account_status    tinyint            NOT NULL DEFAULT 0 comment 'account status',
     user_name         varchar(255)       NOT NULL comment 'user name',
