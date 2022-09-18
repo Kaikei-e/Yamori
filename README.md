@@ -27,3 +27,4 @@ Docker Compose to implement an application that can be deployed immediately.
 - [SvelteKit](https://kit.svelte.dev/)
 - [MariaDB](https://mariadb.com/kb/en/)
 - [Docker](https://www.docker.com/)
+- [Zap](https://github.com/uber-go/zap)
