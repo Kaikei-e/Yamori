@@ -24,24 +24,27 @@ func CheckRun(e *echo.Echo) {
 		}
 	}
 
-	config := crossLogging.Config{
-		ConsoleLoggingEnabled: true,
-		EncodeLogsAsJson:      true,
-		FileLoggingEnabled:    true,
-		Directory:             filepath.Join("/var/log/", logPath),
-		Filename:              "server.log",
-		MaxSize:               50,
-		MaxBackups:            50,
-		MaxAge:                60,
-	}
+	crossLogging.LoggerSetup()
 
-	err := crossLogging.Watcher(e, config)
-	if err != nil {
-		e.Logger.Errorf(err.Error())
-		e.Logger.Fatal("Failed to configure logger")
-
-	}
-
-	crossLogging.Logger.Info().Msg("log file was created, and the logger started correctly")
+	//
+	//config := crossLogging.Config{
+	//	ConsoleLoggingEnabled: true,
+	//	EncodeLogsAsJson:      true,
+	//	FileLoggingEnabled:    true,
+	//	Directory:             filepath.Join("/var/log/", logPath),
+	//	Filename:              "server.log",
+	//	MaxSize:               50,
+	//	MaxBackups:            50,
+	//	MaxAge:                60,
+	//}
+	//
+	//err := crossLogging.Watcher(e, config)
+	//if err != nil {
+	//	e.Logger.Errorf(err.Error())
+	//	e.Logger.Fatal("Failed to configure logger")
+	//
+	//}
+	//
+	//crossLogging.Logger.Info().Msg("log file was created, and the logger started correctly")
 
 }

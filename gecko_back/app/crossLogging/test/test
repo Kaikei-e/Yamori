@@ -4,3 +4,5 @@
 {"level":"info","fileLogging":true,"jsonLogOutput":true,"logDirectory":"test","macSizeMB":1,"maxBackups":1,"maxAgeInDays":1,"time":"2022-09-11T14:57:43+09:00","message":"logger was configured"}
 {"level":"info","fileLogging":true,"jsonLogOutput":true,"logDirectory":"test","macSizeMB":1,"maxBackups":1,"maxAgeInDays":1,"time":"2022-09-11T14:58:34+09:00","message":"logger was configured"}
 {"level":"info","fileLogging":true,"jsonLogOutput":true,"logDirectory":"test","macSizeMB":1,"maxBackups":1,"maxAgeInDays":1,"time":"2022-09-11T14:58:34+09:00","message":"logger was configured"}
+{"level":"info","fileLogging":true,"jsonLogOutput":true,"logDirectory":"test","macSizeMB":1,"maxBackups":1,"maxAgeInDays":1,"time":"2022-09-18T12:02:22+09:00","message":"logger was configured"}
+{"level":"info","fileLogging":true,"jsonLogOutput":true,"logDirectory":"test","macSizeMB":1,"maxBackups":1,"maxAgeInDays":1,"time":"2022-09-18T12:02:22+09:00","message":"logger was configured"}

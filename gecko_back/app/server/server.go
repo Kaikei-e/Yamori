@@ -6,6 +6,7 @@ import (
 	"context"
 	"gecko/crossLogging"
 	"gecko/proto/pkg/authentication"
+	"github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_auth "github.com/grpc-ecosystem/go-grpc-middleware/auth"
 	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
@@ -14,14 +15,11 @@ import (
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"github.com/grpc-ecosystem/go-grpc-middleware"
 
 	"net"
 	"os"
 	"os/signal"
 )
-
-
 
 type AuthServer struct {
 	authentication.UnimplementedAuthenticationServer
@@ -66,16 +64,16 @@ func Server() {
 			grpc_opentracing.StreamServerInterceptor(),
 			grpc_zap.StreamServerInterceptor(zapLogger),
 			grpc_auth.StreamServerInterceptor(myAuthFunction),
-			grpc_recovery.StreamServerInterceptor()),
+			grpc_recovery.StreamServerInterceptor())),
 
-			grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-				grpc_ctxtags.UnaryServerInterceptor(),
-				grpc_opentracing.UnaryServerInterceptor(),
-				grpc_zap.UnaryServerInterceptor(zapLogger),
-				grpc_auth.UnaryServerInterceptor(myAuthFunction),
-				grpc_recovery.UnaryServerInterceptor(),
-			)),
-		)
+		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
+			grpc_ctxtags.UnaryServerInterceptor(),
+			grpc_opentracing.UnaryServerInterceptor(),
+			grpc_zap.UnaryServerInterceptor(zapLogger),
+			grpc_auth.UnaryServerInterceptor(myAuthFunction),
+			grpc_recovery.UnaryServerInterceptor(),
+		)),
+	)
 
 	// register services here
 	authentication.RegisterAuthenticationServer(server, NewAuthServer())
