@@ -1,6 +1,10 @@
 DROP SCHEMA IF EXISTS yamori;
 CREATE DATABASE yamori;
 
+USE yamori;
+
+drop table if exists users;
+
 create table yamori.users
 (
     id                int AUTO_INCREMENT NOT NULL comment 'user id. auto incremented',
