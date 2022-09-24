@@ -4,7 +4,7 @@
 // versions:
 // 	protoc-gen-go v1.26.0
 // 	protoc        v3.15.8
-// source: auth.proto
+// source: authRepo.proto
 
 package authentication
 
