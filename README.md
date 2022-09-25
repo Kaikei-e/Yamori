@@ -1,17 +1,15 @@
 # Yamori
+Yamori is the collective name for a comprehensive suite of products consisting of lodging reservation services, guest management services, and administrative and owner supervision services.
 
-Yamori is an application aiming to implement a real-world-level guest management system.
-
-### Why am I building this application?
-
-
-It is solely to learn comprehensive software engineering.
-
-I will use TypeScript and Svelte for the front end, Go and Echo for the back end and MariaDB for the database.
+It is intended to achieve real-world product-level quality.
 
 <br>
 
-This repository will be used to develop combined development skills from QA to performance tuning, including Docker, front-end and back-end development, database management, and testing.
+## Why am I working on this project?
+
+It is solely to improve my overall development capabilities.
+This includes everything from bit infrastructures teritory such as Docker, DB, backend, and frontend development.
+In addition, this is an ambitious project that aims to reach out to QA and performance tuning. (Yeah, I get it. I'm not a genius, so these things will be very challenging.)
 
 <br>
 
