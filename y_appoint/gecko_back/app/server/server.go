@@ -3,17 +3,16 @@
 package server
 
 import (
-	"database/sql"
+	"context"
 	"gecko/crossLogging"
+	"gecko/dbConn"
 	"gecko/proto/pkg/authentication"
 	"github.com/grpc-ecosystem/go-grpc-middleware"
-	grpc_zap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
-	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	grpc_ctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
-	grpc_opentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
+	grpczap "github.com/grpc-ecosystem/go-grpc-middleware/logging/zap"
+	grpcrecovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
+	grpcctxtags "github.com/grpc-ecosystem/go-grpc-middleware/tags"
+	grpcopentracing "github.com/grpc-ecosystem/go-grpc-middleware/tracing/opentracing"
 	"github.com/joho/godotenv"
-	"github.com/uptrace/bun"
-	"github.com/uptrace/bun/dialect/mysqldialect"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -25,30 +24,34 @@ import (
 
 type Repository interface{}
 
-type db struct {
-	db *bun.DB
-}
-
-func NewRepo() (Repository, error) {
-
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-
-	open, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
-	if err != nil {
-		panic(err)
-	}
-
-	db := bun.NewDB(open, mysqldialect.New())
-
-	return &db{db}, nil
-}
-
 type AuthServer struct {
 	authentication.UnimplementedAuthenticationServer
+}
+
+func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error) {
+	crossLogging.Logger.Info("login request", zap.String("username", req.Username))
+
+	var conn dbConn.Conn
+	db, err := conn.PassConn()
+	if err != nil {
+		crossLogging.Logger.Error("error while creating a new auth repo", zap.Error(err))
+		return nil, err
+	}
+
+	user, err := dbConn.FetchUser(ctx, db, req.Username)
+	if err != nil {
+		crossLogging.Logger.Error("error while logging in", zap.Error(err))
+		return nil, err
+	}
+
+	return &authentication.LoginResponse{
+		Token: user.Token,
+	}, nil
+
+}
+
+func NewAuthServer() *AuthServer {
+	return &AuthServer{}
 }
 
 func Server() {
@@ -71,18 +74,18 @@ func Server() {
 
 	server := grpc.NewServer(
 		grpc.StreamInterceptor(grpc_middleware.ChainStreamServer(
-			grpc_ctxtags.StreamServerInterceptor(),
-			grpc_opentracing.StreamServerInterceptor(),
-			grpc_zap.StreamServerInterceptor(crossLogging.Logger),
+			grpcctxtags.StreamServerInterceptor(),
+			grpcopentracing.StreamServerInterceptor(),
+			grpczap.StreamServerInterceptor(crossLogging.Logger),
 			//grpc_auth.StreamServerInterceptor(),
-			grpc_recovery.StreamServerInterceptor())),
+			grpcrecovery.StreamServerInterceptor())),
 
 		grpc.UnaryInterceptor(grpc_middleware.ChainUnaryServer(
-			grpc_ctxtags.UnaryServerInterceptor(),
-			grpc_opentracing.UnaryServerInterceptor(),
-			grpc_zap.UnaryServerInterceptor(crossLogging.Logger),
+			grpcctxtags.UnaryServerInterceptor(),
+			grpcopentracing.UnaryServerInterceptor(),
+			grpczap.UnaryServerInterceptor(crossLogging.Logger),
 			//grpc_auth.UnaryServerInterceptor(),
-			grpc_recovery.UnaryServerInterceptor(),
+			grpcrecovery.UnaryServerInterceptor(),
 		)),
 	)
 
@@ -110,4 +113,9 @@ func Server() {
 	server.GracefulStop()
 
 	crossLogging.Logger.Info("grpc server stopped")
+}
+
+type AuthenticationServer interface {
+	Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error)
+	mustEmbedUnimplementedGreetingServiceServer()
 }
