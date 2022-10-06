@@ -16,9 +16,9 @@ services:
         ipv4_address: 192.168.10.2
     depends_on:
       - mariadb
-  gecko_front:
+  y_appo_front:
     build:
-      context: ./gecko_front
+      context: ./y_appoint/gecko_front
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
@@ -27,18 +27,17 @@ services:
       - '122:22'
       - '3000:3000'
     volumes:
-      - './gecko_front/app:/app'
+      - './y_appoint/gecko_front/app:/app'
     depends_on:
       - mariadb
-    
+
     networks:
       app-network:
         ipv4_address: 192.168.10.3
 
-
-  gecko_back:
+  y_appo_back:
     build:
-      context: ./gecko_back
+      context: ./y_appoint/gecko_back
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
@@ -47,8 +46,8 @@ services:
       - '222:22'
       - '9000:8080'
     volumes:
-      - './gecko_back/app:/app'
-    
+      - './y_appoint/gecko_back/app:/app'
+
     networks:
       app-network:
         ipv4_address: 192.168.10.4
@@ -82,5 +81,3 @@ networks:
       driver: default
       config:
         - subnet: 192.168.10.0/24
-
-
