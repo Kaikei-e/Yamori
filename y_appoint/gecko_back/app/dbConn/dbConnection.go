@@ -3,7 +3,6 @@
 package dbConn
 
 import (
-	"context"
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/uptrace/bun"
@@ -11,13 +10,21 @@ import (
 	"os"
 )
 
-type DBConn = func(ctx context.Context) *bun.DB
-
-type Conn struct {
-	db *bun.DB
+type Conn interface {
+	OpenConn() (*bun.DB, error)
+	PassConn() (*bun.DB, error)
 }
 
-func OpenConn() (*bun.DB, error) {
+type DB struct {
+	*bun.DB
+}
+
+func (db *DB) PassConn() (*bun.DB, error) {
+	return db.DB, nil
+
+}
+
+func (db *DB) OpenConn() (*bun.DB, error) {
 	user := os.Getenv("DB_USER")
 	password := os.Getenv("DB_PASSWORD")
 	host := os.Getenv("DB_HOST")
@@ -29,25 +36,7 @@ func OpenConn() (*bun.DB, error) {
 		panic(err)
 	}
 
-	db := bun.NewDB(open, mysqldialect.New())
+	db.DB = bun.NewDB(open, mysqldialect.New())
 
-	return db, nil
-}
-
-func DBConnection() (*bun.DB, error) {
-
-	user := os.Getenv("DB_USER")
-	password := os.Getenv("DB_PASSWORD")
-	host := os.Getenv("DB_HOST")
-	port := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-
-	open, err := sql.Open("mysql", user+":"+password+"@tcp("+host+":"+port+")/"+dbName)
-	if err != nil {
-		panic(err)
-	}
-
-	db := bun.NewDB(open, mysqldialect.New())
-
-	return db, nil
+	return db.DB, nil
 }

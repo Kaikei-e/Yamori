@@ -5,4 +5,5 @@ type User struct {
 	Email    string `json:"email" bun:"email"`
 	PassHash string `json:"pass_hash,omitempty" bun:"pass_hash"`
 	UserRole int64  `json:"user_role" bun:"user_role"`
+	Token    string `json:"token,omitempty" bun:"token"`
 }
