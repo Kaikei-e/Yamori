@@ -4,6 +4,7 @@ package server
 
 import (
 	"context"
+	"gecko/authen"
 	"gecko/crossLogging"
 	"gecko/dbConn"
 	"gecko/proto/pkg/authentication"
@@ -38,9 +39,15 @@ func (a *AuthServer) Login(ctx context.Context, req *authentication.LoginRequest
 		return nil, err
 	}
 
-	user, err := dbConn.FetchUser(ctx, db, req.Username)
+	storedUser, err := dbConn.FetchUser(ctx, db, req.Username)
 	if err != nil {
 		crossLogging.Logger.Error("error while logging in", zap.Error(err))
+		return nil, err
+	}
+
+	user, err := authen.ComparePass(*storedUser, req.Password)
+	if err != nil {
+		crossLogging.Logger.Error("error while comparing password", zap.Error(err))
 		return nil, err
 	}
 
