@@ -2,13 +2,35 @@ package main
 
 import (
 	"appoint/inittialize"
+	"appoint/repository"
 	"fmt"
+	"os"
 )
 
 func init() {
 	inittialize.Check()
+
+	db := repository.NewDBConn()
+	err := db.Ping()
+	if err != nil {
+		_, err := fmt.Fprintf(os.Stderr, "error!! failed to ping db : %+v", err)
+		if err != nil {
+			panic(err)
+		}
+
+		panic(err)
+	}
+
+	d := db.Connect()
+	defer d.Close()
+
 }
 
 func main() {
-	fmt.Printf("hello world")
+	fmt.Println("hello world")
+
+	db := repository.NewDBConn()
+	cn := db.Connect()
+	defer cn.Close()
+
 }
