@@ -5,11 +5,14 @@ import (
 	"gecko/server"
 )
 
-func main() {
+func init() {
 	// Check if the .env file exists
 	// If it does not exist, panic
 	initCheck.EnvLoader()
 	initCheck.CheckRun()
+}
+
+func main() {
 
 	db, err := initCheck.CreateDBConn()
 	if err != nil {
