@@ -15,6 +15,9 @@ In addition, this is an ambitious project that aims to reach out to QA and perfo
 
 Docker Compose to implement an application that can be deployed immediately.
 
+<br>
+
+I will remove old_ref dir ASAP. That is the rest of prototyping.
 
 ## Library, Framework
 
