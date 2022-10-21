@@ -1,9 +1,14 @@
 package main
 
-func init(){
-	
+import (
+	"appoint/inittialize"
+	"fmt"
+)
+
+func init() {
+	inittialize.Check()
 }
 
-func main(){
-
+func main() {
+	fmt.Printf("hello world")
 }
