@@ -6,6 +6,7 @@ import (
 	"context"
 	"gecko/auth"
 	"gecko/crossLogging"
+	"gecko/dbConn"
 	"gecko/proto/pkg/authentication"
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
@@ -77,4 +78,9 @@ func Server() {
 	server.GracefulStop()
 
 	crossLogging.Logger.Info().Msg("grpc server is stopped")
+}
+
+type AuthenticationServer interface {
+	Login(ctx context.Context, req *authentication.LoginRequest) (*authentication.LoginResponse, error)
+	mustEmbedUnimplementedGreetingServiceServer()
 }
