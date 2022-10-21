@@ -18,7 +18,7 @@ services:
       - mariadb
   y_appo_front:
     build:
-      context: ./y_appoint/gecko_front
+      context: ./y_appoint/appo_front
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
@@ -27,7 +27,7 @@ services:
       - '122:22'
       - '3000:3000'
     volumes:
-      - './y_appoint/gecko_front/app:/app'
+      - './y_appoint/appo_front/app:/app'
     depends_on:
       - mariadb
 
@@ -37,7 +37,7 @@ services:
 
   y_appo_back:
     build:
-      context: ./y_appoint/gecko_back
+      context: ./y_appoint/appo_back
       dockerfile: Dockerfile
     environment:
       timezone: 'Asia/Tokyo'
@@ -47,7 +47,7 @@ services:
       - '9000:8080'
       - '9002:9020'
     volumes:
-      - './y_appoint/gecko_back/app:/app'
+      - './y_appoint/appo_back/app:/app'
 
     networks:
       app-network:
