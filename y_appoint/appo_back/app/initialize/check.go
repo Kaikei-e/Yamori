@@ -1,4 +1,4 @@
-package inittialize
+package initialize
 
 import (
 	"fmt"
@@ -6,7 +6,9 @@ import (
 	"os"
 )
 
-func LoadEnv() map[string]string {
+func Check() {
+	// TODO: will implement logger
+
 	err := godotenv.Load()
 	if err != nil {
 		_, err := fmt.Fprintf(os.Stderr, "error!! failed to load .env : %+v", err)
@@ -28,15 +30,25 @@ func LoadEnv() map[string]string {
 
 	gRPCPort := os.Getenv("GPORT")
 
-	envVar := map[string]string{
-		"ipPath":   ipPath,
-		"dbIP":     dbIP,
-		"dbPass":   dbPass,
-		"dbPort":   dbPort,
-		"dbName":   dbName,
-		"dbUser":   dbUser,
-		"gRPCPort": gRPCPort,
+	var checkList []string
+	checkList = append(checkList,
+		ipPath,
+		dbIP,
+		dbPass,
+		dbPort,
+		dbName,
+		dbUser,
+		gRPCPort)
+
+	for i, s := range checkList {
+		if s == "" {
+			_, err := fmt.Fprintf(os.Stderr, "error!! failed to load .env no.%+v : %+v", i, err)
+			if err != nil {
+				panic(err)
+			}
+
+			panic(err)
+		}
 	}
 
-	return envVar
 }

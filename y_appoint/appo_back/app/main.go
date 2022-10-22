@@ -1,14 +1,14 @@
 package main
 
 import (
-	"appoint/inittialize"
+	"appoint/initialize"
 	"appoint/repository"
 	"fmt"
 	"os"
 )
 
 func init() {
-	inittialize.Check()
+	initialize.Check()
 
 	db := repository.NewDBConn()
 	err := db.Ping()

@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"appoint/inittialize"
+	"appoint/initialize"
 	"database/sql"
 	"fmt"
 	mysql "github.com/go-sql-driver/mysql"
@@ -22,7 +22,7 @@ type (
 )
 
 func (d *DBConnImpl) Connect() *bun.DB {
-	envs := inittialize.LoadEnv()
+	envs := initialize.LoadEnv()
 
 	jst, err := time.LoadLocation("Asia/Tokyo")
 	if err != nil {
